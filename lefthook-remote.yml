@@ -1,0 +1,12 @@
+---
+pre-commit:
+  commands:
+    nixfmt:
+      glob: "*.nix"
+      run: timeout ${LEFTHOOK_NIXFMT_TIMEOUT:-30} nixfmt --check {staged_files}
+
+pre-push:
+  commands:
+    nixfmt:
+      glob: "*.nix"
+      run: timeout ${LEFTHOOK_NIXFMT_TIMEOUT:-30} nixfmt --check {push_files}
