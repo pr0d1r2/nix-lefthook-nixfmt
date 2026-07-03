@@ -15,13 +15,10 @@ across Linux and macOS on both amd64 and arm64.
 2. Non-existent files and non-`.nix` files must be silently skipped (exit 0).
 3. Default mode is `--check`; `--format` reformats in place and exits 0.
 4. A badly-formatted `.nix` file must cause a non-zero exit in `--check` mode.
-5. The flake must evaluate on all four supported systems: `aarch64-darwin`,
-   `x86_64-darwin`, `x86_64-linux`, `aarch64-linux`.
+5. The flake must evaluate on all four supported systems: `aarch64-darwin`, `x86_64-darwin`, `x86_64-linux`, `aarch64-linux`.
 6. CI must pass on both `ubuntu-latest` and `macos-latest`.
-7. Every shell script must have 1-to-1 bats unit test coverage
-   (`tests/unit/<name>.bats`).
-8. All lefthook commands must have a timeout
-   (default `$LEFTHOOK_NIXFMT_TIMEOUT` / 30 s).
+7. Every shell script must have 1-to-1 bats unit test coverage (`tests/unit/<name>.bats`).
+8. All lefthook commands must have a timeout (default `$LEFTHOOK_NIXFMT_TIMEOUT` / 30 s).
 9. Lefthook checks must appear in both `pre-commit` and `pre-push`.
 10. No embedded shell in Nix files — shell logic is extracted to `.sh` files.
 11. Shell scripts must not define functions; factor into separate scripts.
@@ -90,32 +87,14 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 
 ## §B — Bugs / Known Issues
 
-1. **`.envrc` missing `watch_file` directives** — The `.envrc` contains only
-   `use flake`. Per the project's own direnv skill, it should watch
-   `flake.nix`, `flake.lock`, and dependent files so `direnv` reloads when
-   they change. Without this, developers must manually `direnv reload` after
-   flake changes.
+1. **`.envrc` missing `watch_file` directives** — The `.envrc` contains only `use flake`. Per the project's own direnv skill, it should watch `flake.nix`, `flake.lock`, and dependent files so `direnv` reloads when they change. Without this, developers must manually `direnv reload` after flake changes.
 
-2. **Inconsistent `actions/checkout` versions** — `ci.yml` uses
-   `actions/checkout@v6` while `update-pins.yml` uses `@v4`.
+2. **Inconsistent `actions/checkout` versions** — `ci.yml` uses `actions/checkout@v6` while `update-pins.yml` uses `@v4`.
 
-3. **Local vs. remote nixfmt invocation mismatch** — `lefthook.yml` runs raw
-   `nixfmt --check {staged_files}` bypassing the wrapper, while
-   `lefthook-remote.yml` (for consumers) uses `lefthook-nixfmt`. The README
-   documents this as intentional (avoiding circular flake deps), but it means
-   the wrapper's file-filtering logic (skip non-`.nix`, skip missing) is not
-   exercised by the project's own hooks.
+3. **Local vs. remote nixfmt invocation mismatch** — `lefthook.yml` runs raw `nixfmt --check {staged_files}` bypassing the wrapper, while `lefthook-remote.yml` (for consumers) uses `lefthook-nixfmt`. The README documents this as intentional (avoiding circular flake deps), but it means the wrapper's file-filtering logic (skip non-`.nix`, skip missing) is not exercised by the project's own hooks.
 
-4. **`ci` devShell sets `BATS_LIB_PATH` as env, `default` sets it in
-   shellHook** — The `ci` shell uses `BATS_LIB_PATH = "${batsWithLibs}/share/bats"`
-   as an environment variable, while the `default` shell substitutes
-   `@BATS_LIB_PATH@` in `dev.sh`. The value is correct in both but the
-   `ci` shell path differs from what `dev.sh` produces (`…/share/bats` vs
-   the template which appends `/share/bats` to the raw derivation path).
-   These resolve to the same directory only because `batsWithLibs` output is
-   the bats prefix. If the derivation layout changes, they could diverge.
+4. **`ci` devShell sets `BATS_LIB_PATH` as env, `default` sets it in shellHook** — The `ci` shell uses `BATS_LIB_PATH = "${batsWithLibs}/share/bats"` as an environment variable, while the `default` shell substitutes `@BATS_LIB_PATH@` in `dev.sh`. The value is correct in both but the `ci` shell path differs from what `dev.sh` produces (`…/share/bats` vs the template which appends `/share/bats` to the raw derivation path). These resolve to the same directory only because `batsWithLibs` output is the bats prefix. If the derivation layout changes, they could diverge.
 
-5. **Remote lefthook configs pinned to `main`** — All 15 remote lefthook
-   repos in `lefthook.yml` use `ref: main`, meaning hook behavior can change
-   without any local change. Pinning to SHAs or tags would improve
-   reproducibility.
+5. **Remote lefthook configs pinned to `main`** — All 15 remote lefthook repos in `lefthook.yml` use `ref: main`, meaning hook behavior can change without any local change. Pinning to SHAs or tags would improve reproducibility.
+
+6. **`SPEC.md` 3-space continuation indentation fails editorconfig-checker** — Numbered list continuation lines used 3-space indentation to align with list text, violating the `.editorconfig` `indent_size = 2` rule. Fixed by unwrapping continuations to single lines (MD013/line-length is already disabled).
