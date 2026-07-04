@@ -201,6 +201,7 @@
             pkgs.nix
             pkgs.nixfmt
             pkgs.parallel
+            pkgs.shellcheck
           ]
           ++ (lefthookWrappersFor pkgs);
         in
