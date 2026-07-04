@@ -76,7 +76,7 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 | status | id | goal |
 |---|---|---|
 | `x` | T10 | Create `scripts/lefthook/nixfmt-check.sh` (wraps `timeout ${LEFTHOOK_NIXFMT_TIMEOUT:-30} nixfmt --check "$@"`) with TDD bats test at `tests/unit/scripts/lefthook/nixfmt-check.bats`; must pass shellcheck |
-| `.` | T11 | Update `lefthook.yml` pre-commit and pre-push nixfmt commands to `bash scripts/lefthook/nixfmt-check.sh {staged_files}` / `{push_files}` replacing inline shell (depends on T10) |
+| `x` | T11 | Update `lefthook.yml` pre-commit and pre-push nixfmt commands to `bash scripts/lefthook/nixfmt-check.sh {staged_files}` / `{push_files}` replacing inline shell (depends on T10) |
 | `x` | T01 | Add `watch_file` entries to `.envrc` for `flake.nix`, `flake.lock`, `dev.sh`, and `lefthook-nixfmt.sh` per direnv skill |
 | `.` | T02 | Extract inline `nixfmt --check` commands in `lefthook.yml` pre-commit/pre-push to a shell script per lefthook modularity skill |
 | `.` | T03 | Upgrade `actions/checkout` in `update-pins.yml` from v4 to v6 to match `ci.yml` |
