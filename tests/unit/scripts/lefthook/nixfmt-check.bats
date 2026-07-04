@@ -4,7 +4,7 @@ setup() {
     load "${BATS_LIB_PATH}/bats-support/load.bash"
     load "${BATS_LIB_PATH}/bats-assert/load.bash"
 
-    TMP="$BATS_TEST_TMPDIR"
+    export TMP="$BATS_TEST_TMPDIR"
     SCRIPT="$BATS_TEST_DIRNAME/../../../../scripts/lefthook/nixfmt-check.sh"
 
     mkdir -p "$TMP/bin"
