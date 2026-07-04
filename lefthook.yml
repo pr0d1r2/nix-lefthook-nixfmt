@@ -69,11 +69,11 @@ pre-commit:
   commands:
     nixfmt:
       glob: "*.nix"
-      run: timeout ${LEFTHOOK_NIXFMT_TIMEOUT:-30} nixfmt --check {staged_files}
+      run: bash scripts/lefthook/nixfmt-check.sh {staged_files}
 
 pre-push:
   parallel: true
   commands:
     nixfmt:
       glob: "*.nix"
-      run: timeout ${LEFTHOOK_NIXFMT_TIMEOUT:-30} nixfmt --check {push_files}
+      run: bash scripts/lefthook/nixfmt-check.sh {push_files}
