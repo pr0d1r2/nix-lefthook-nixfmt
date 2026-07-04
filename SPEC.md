@@ -75,7 +75,7 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 
 | status | id | goal |
 |---|---|---|
-| `.` | T01 | Add `watch_file` entries to `.envrc` for `flake.nix`, `flake.lock`, `dev.sh`, and `lefthook-nixfmt.sh` per direnv skill |
+| `x` | T01 | Add `watch_file` entries to `.envrc` for `flake.nix`, `flake.lock`, `dev.sh`, and `lefthook-nixfmt.sh` per direnv skill |
 | `.` | T02 | Extract inline `nixfmt --check` commands in `lefthook.yml` pre-commit/pre-push to a shell script per lefthook modularity skill |
 | `.` | T03 | Upgrade `actions/checkout` in `update-pins.yml` from v4 to v6 to match `ci.yml` |
 | `.` | T04 | Add markdownlint lefthook check for `*.md` files (config already exists at `.markdownlint.yml`) |
