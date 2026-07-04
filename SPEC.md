@@ -75,7 +75,7 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 
 | status | id | goal |
 |---|---|---|
-| `.` | T10 | Create `scripts/lefthook/nixfmt-check.sh` (wraps `timeout ${LEFTHOOK_NIXFMT_TIMEOUT:-30} nixfmt --check "$@"`) with TDD bats test at `tests/unit/scripts/lefthook/nixfmt-check.bats`; must pass shellcheck |
+| `x` | T10 | Create `scripts/lefthook/nixfmt-check.sh` (wraps `timeout ${LEFTHOOK_NIXFMT_TIMEOUT:-30} nixfmt --check "$@"`) with TDD bats test at `tests/unit/scripts/lefthook/nixfmt-check.bats`; must pass shellcheck |
 | `.` | T11 | Update `lefthook.yml` pre-commit and pre-push nixfmt commands to `bash scripts/lefthook/nixfmt-check.sh {staged_files}` / `{push_files}` replacing inline shell (depends on T10) |
 | `x` | T01 | Add `watch_file` entries to `.envrc` for `flake.nix`, `flake.lock`, `dev.sh`, and `lefthook-nixfmt.sh` per direnv skill |
 | `.` | T02 | Extract inline `nixfmt --check` commands in `lefthook.yml` pre-commit/pre-push to a shell script per lefthook modularity skill |
@@ -100,3 +100,5 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 5. **Remote lefthook configs pinned to `main`** — All 15 remote lefthook repos in `lefthook.yml` use `ref: main`, meaning hook behavior can change without any local change. Pinning to SHAs or tags would improve reproducibility.
 
 6. **`SPEC.md` 3-space continuation indentation fails editorconfig-checker** — Numbered list continuation lines used 3-space indentation to align with list text, violating the `.editorconfig` `indent_size = 2` rule. Fixed by unwrapping continuations to single lines (MD013/line-length is already disabled).
+
+7. **`shellcheck` not directly available in CI devShell** — The `ci` devShell only exposed `shellcheck` as a `runtimeInput` inside the `lefthook-shellcheck` wrapper, not on the top-level PATH. The bats test `passes shellcheck` in `nixfmt-check.bats` calls `shellcheck` directly, so it failed in CI with "command not found". Fixed by adding `pkgs.shellcheck` to `ciCommon` in `flake.nix`.
