@@ -203,6 +203,7 @@
             pkgs.nixfmt
             pkgs.parallel
             pkgs.shellcheck
+            pkgs.taplo
           ]
           ++ (lefthookWrappersFor pkgs);
         in

@@ -56,3 +56,28 @@ setup() {
     run grep -A20 "^pre-push:" "$CONFIG"
     assert_output --partial '*.md'
 }
+
+@test "pre-commit taplo uses bash scripts/lefthook/taplo-check.sh with staged_files" {
+    run grep -A20 "^pre-commit:" "$CONFIG"
+    assert_output --partial "bash scripts/lefthook/taplo-check.sh {staged_files}"
+}
+
+@test "pre-push taplo uses bash scripts/lefthook/taplo-check.sh with push_files" {
+    run grep -A20 "^pre-push:" "$CONFIG"
+    assert_output --partial "bash scripts/lefthook/taplo-check.sh {push_files}"
+}
+
+@test "pre-commit taplo has glob for toml files" {
+    run grep -A20 "^pre-commit:" "$CONFIG"
+    assert_output --partial '*.toml'
+}
+
+@test "pre-push taplo has glob for toml files" {
+    run grep -A20 "^pre-push:" "$CONFIG"
+    assert_output --partial '*.toml'
+}
+
+@test "no inline timeout in taplo commands" {
+    run grep "timeout.*taplo" "$CONFIG"
+    assert_failure
+}

@@ -18,7 +18,7 @@ across Linux and macOS on both amd64 and arm64.
 5. The flake must evaluate on all four supported systems: `aarch64-darwin`, `x86_64-darwin`, `x86_64-linux`, `aarch64-linux`.
 6. CI must pass on both `ubuntu-latest` and `macos-latest`.
 7. Every shell script must have 1-to-1 bats unit test coverage (`tests/unit/<name>.bats`).
-8. All lefthook commands must have a timeout (default `$LEFTHOOK_NIXFMT_TIMEOUT` / 30 s).
+8. All lefthook commands must have a timeout (per-hook `$LEFTHOOK_<TOOL>_TIMEOUT`, default 30 s).
 9. Lefthook checks must appear in both `pre-commit` and `pre-push`.
 10. No embedded shell in Nix files — shell logic is extracted to `.sh` files.
 11. Shell scripts must not define functions; factor into separate scripts.
@@ -64,6 +64,8 @@ lefthook-nixfmt [--check | --format] [file ...]
 | Variable | Default | Description |
 |---|---|---|
 | `LEFTHOOK_NIXFMT_TIMEOUT` | `30` | Timeout in seconds for the nixfmt hook |
+| `LEFTHOOK_MARKDOWNLINT_TIMEOUT` | `30` | Timeout in seconds for the markdownlint hook |
+| `LEFTHOOK_TAPLO_TIMEOUT` | `30` | Timeout in seconds for the taplo hook |
 | `BATS_LIB_PATH` | set by `dev.sh` / `ci` shell | Path to bats helper libraries |
 
 ### Dev shell hook (`dev.sh`)
@@ -81,7 +83,7 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 | `x` | T02 | Extract inline `nixfmt --check` commands in `lefthook.yml` pre-commit/pre-push to a shell script per lefthook modularity skill |
 | `x` | T03 | Upgrade `actions/checkout` in `update-pins.yml` from v4 to v6 to match `ci.yml` |
 | `x` | T04 | Add markdownlint lefthook check for `*.md` files (config already exists at `.markdownlint.yml`) |
-| `.` | T05 | Add TOML linter (e.g. `taplo`) lefthook check for `.rtk/filters.toml` |
+| `x` | T05 | Add TOML linter (e.g. `taplo`) lefthook check for `.rtk/filters.toml` |
 | `.` | T06 | Add edge-case bats tests for `lefthook-nixfmt`: mixed nix/non-nix args, `--format` on already-formatted file, directory argument |
 | `.` | T07 | Add `nix flake check` to CI workflow (currently only run in `update-pins.yml`) |
 | `.` | T08 | Pin remote lefthook configs to specific refs/SHAs instead of `main` for reproducibility |
