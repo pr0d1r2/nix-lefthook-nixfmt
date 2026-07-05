@@ -73,6 +73,9 @@ pre-commit:
     markdownlint:
       glob: "*.md"
       run: bash scripts/lefthook/markdownlint-check.sh {staged_files}
+    taplo:
+      glob: "*.toml"
+      run: bash scripts/lefthook/taplo-check.sh {staged_files}
 
 pre-push:
   parallel: true
@@ -83,3 +86,6 @@ pre-push:
     markdownlint:
       glob: "*.md"
       run: bash scripts/lefthook/markdownlint-check.sh {push_files}
+    taplo:
+      glob: "*.toml"
+      run: bash scripts/lefthook/taplo-check.sh {push_files}
