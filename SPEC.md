@@ -18,7 +18,7 @@ across Linux and macOS on both amd64 and arm64.
 5. The flake must evaluate on all four supported systems: `aarch64-darwin`, `x86_64-darwin`, `x86_64-linux`, `aarch64-linux`.
 6. CI must pass on both `ubuntu-latest` and `macos-latest`.
 7. Every shell script must have 1-to-1 bats unit test coverage (`tests/unit/<name>.bats`).
-8. All lefthook commands must have a timeout (default `$LEFTHOOK_NIXFMT_TIMEOUT` / 30 s).
+8. All lefthook commands must have a timeout (per-hook `$LEFTHOOK_<TOOL>_TIMEOUT`, default 30 s).
 9. Lefthook checks must appear in both `pre-commit` and `pre-push`.
 10. No embedded shell in Nix files — shell logic is extracted to `.sh` files.
 11. Shell scripts must not define functions; factor into separate scripts.
@@ -64,6 +64,8 @@ lefthook-nixfmt [--check | --format] [file ...]
 | Variable | Default | Description |
 |---|---|---|
 | `LEFTHOOK_NIXFMT_TIMEOUT` | `30` | Timeout in seconds for the nixfmt hook |
+| `LEFTHOOK_MARKDOWNLINT_TIMEOUT` | `30` | Timeout in seconds for the markdownlint hook |
+| `LEFTHOOK_TAPLO_TIMEOUT` | `30` | Timeout in seconds for the taplo hook |
 | `BATS_LIB_PATH` | set by `dev.sh` / `ci` shell | Path to bats helper libraries |
 
 ### Dev shell hook (`dev.sh`)
