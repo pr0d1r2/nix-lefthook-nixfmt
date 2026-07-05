@@ -102,3 +102,5 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 6. **`SPEC.md` 3-space continuation indentation fails editorconfig-checker** — Numbered list continuation lines used 3-space indentation to align with list text, violating the `.editorconfig` `indent_size = 2` rule. Fixed by unwrapping continuations to single lines (MD013/line-length is already disabled).
 
 7. **`shellcheck` not directly available in CI devShell** — The `ci` devShell only exposed `shellcheck` as a `runtimeInput` inside the `lefthook-shellcheck` wrapper, not on the top-level PATH. The bats test `passes shellcheck` in `nixfmt-check.bats` calls `shellcheck` directly, so it failed in CI with "command not found". Fixed by adding `pkgs.shellcheck` to `ciCommon` in `flake.nix`.
+
+8. **Orphaned `update-pins-yml.bats` after dropping `update-pins.yml` workflow** — The commit that removed `.github/workflows/update-pins.yml` ("drop update-pins cron") left its test file `tests/unit/github/workflows/update-pins-yml.bats` in place, causing 5 test failures (grep against a non-existent file). Fixed by removing the orphaned test file.
