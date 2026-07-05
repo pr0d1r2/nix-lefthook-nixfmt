@@ -1,0 +1,21 @@
+---
+name: Update Pins
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-pins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: DeterminateSystems/nix-installer-action@main
+      - run: nix flake update
+      - run: nix flake check
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore: update flake pins"
+          title: "chore: update flake pins"
+          branch: update-pins
