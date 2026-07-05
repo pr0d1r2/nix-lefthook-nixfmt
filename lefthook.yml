@@ -70,6 +70,9 @@ pre-commit:
     nixfmt:
       glob: "*.nix"
       run: bash scripts/lefthook/nixfmt-check.sh {staged_files}
+    markdownlint:
+      glob: "*.md"
+      run: bash scripts/lefthook/markdownlint-check.sh {staged_files}
 
 pre-push:
   parallel: true
@@ -77,3 +80,6 @@ pre-push:
     nixfmt:
       glob: "*.nix"
       run: bash scripts/lefthook/nixfmt-check.sh {push_files}
+    markdownlint:
+      glob: "*.md"
+      run: bash scripts/lefthook/markdownlint-check.sh {push_files}
