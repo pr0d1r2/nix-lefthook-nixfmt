@@ -32,6 +32,11 @@ setup() {
     assert_failure
 }
 
+@test "no inline timeout in markdownlint commands" {
+    run grep "timeout.*markdownlint" "$CONFIG"
+    assert_failure
+}
+
 @test "pre-commit markdownlint uses bash scripts/lefthook/markdownlint-check.sh with staged_files" {
     run grep -A20 "^pre-commit:" "$CONFIG"
     assert_output --partial "bash scripts/lefthook/markdownlint-check.sh {staged_files}"
