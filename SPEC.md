@@ -80,7 +80,7 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 | `x` | T01 | Add `watch_file` entries to `.envrc` for `flake.nix`, `flake.lock`, `dev.sh`, and `lefthook-nixfmt.sh` per direnv skill |
 | `x` | T02 | Extract inline `nixfmt --check` commands in `lefthook.yml` pre-commit/pre-push to a shell script per lefthook modularity skill |
 | `x` | T03 | Upgrade `actions/checkout` in `update-pins.yml` from v4 to v6 to match `ci.yml` |
-| `.` | T04 | Add markdownlint lefthook check for `*.md` files (config already exists at `.markdownlint.yml`) |
+| `x` | T04 | Add markdownlint lefthook check for `*.md` files (config already exists at `.markdownlint.yml`) |
 | `.` | T05 | Add TOML linter (e.g. `taplo`) lefthook check for `.rtk/filters.toml` |
 | `.` | T06 | Add edge-case bats tests for `lefthook-nixfmt`: mixed nix/non-nix args, `--format` on already-formatted file, directory argument |
 | `.` | T07 | Add `nix flake check` to CI workflow (currently only run in `update-pins.yml`) |

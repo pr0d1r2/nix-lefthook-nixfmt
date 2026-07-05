@@ -31,3 +31,28 @@ setup() {
     run grep "timeout.*nixfmt" "$CONFIG"
     assert_failure
 }
+
+@test "no inline timeout in markdownlint commands" {
+    run grep "timeout.*markdownlint" "$CONFIG"
+    assert_failure
+}
+
+@test "pre-commit markdownlint uses bash scripts/lefthook/markdownlint-check.sh with staged_files" {
+    run grep -A20 "^pre-commit:" "$CONFIG"
+    assert_output --partial "bash scripts/lefthook/markdownlint-check.sh {staged_files}"
+}
+
+@test "pre-push markdownlint uses bash scripts/lefthook/markdownlint-check.sh with push_files" {
+    run grep -A20 "^pre-push:" "$CONFIG"
+    assert_output --partial "bash scripts/lefthook/markdownlint-check.sh {push_files}"
+}
+
+@test "pre-commit markdownlint has glob for md files" {
+    run grep -A20 "^pre-commit:" "$CONFIG"
+    assert_output --partial '*.md'
+}
+
+@test "pre-push markdownlint has glob for md files" {
+    run grep -A20 "^pre-push:" "$CONFIG"
+    assert_output --partial '*.md'
+}
