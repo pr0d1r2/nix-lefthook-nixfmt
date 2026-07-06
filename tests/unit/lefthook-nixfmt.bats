@@ -115,6 +115,9 @@ NIX
 NIX
     cp "$TMP/good.nix" "$TMP/good.nix.orig"
     run lefthook-nixfmt --format "$TMP/good.nix"
+    if [ "$status" -ne 0 ] && [[ "$output" == *"setOwnerAndGroup"* ]]; then
+        skip "nixfmt atomic writes not supported in this environment"
+    fi
     assert_success
     run diff "$TMP/good.nix" "$TMP/good.nix.orig"
     assert_success
