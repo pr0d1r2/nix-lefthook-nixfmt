@@ -8,11 +8,11 @@ setup() {
 }
 
 @test "build-linux job runs nix flake check" {
-  run grep -A20 "build-linux:" "$CONFIG"
+  run grep -A6 "build-linux:" "$CONFIG"
   assert_output --partial "nix flake check"
 }
 
 @test "build-macos job runs nix flake check" {
-  run grep -A20 "build-macos:" "$CONFIG"
+  run grep -A7 "build-macos:" "$CONFIG"
   assert_output --partial "nix flake check"
 }
