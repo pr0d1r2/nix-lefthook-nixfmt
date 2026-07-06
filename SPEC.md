@@ -84,7 +84,7 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 | `x` | T03 | Upgrade `actions/checkout` in `update-pins.yml` from v4 to v6 to match `ci.yml` |
 | `x` | T04 | Add markdownlint lefthook check for `*.md` files (config already exists at `.markdownlint.yml`) |
 | `x` | T05 | Add TOML linter (e.g. `taplo`) lefthook check for `.rtk/filters.toml` |
-| `.` | T06 | Add edge-case bats tests for `lefthook-nixfmt`: mixed nix/non-nix args, `--format` on already-formatted file, directory argument |
+| `x` | T06 | Add edge-case bats tests for `lefthook-nixfmt`: mixed nix/non-nix args, `--format` on already-formatted file, directory argument |
 | `.` | T07 | Add `nix flake check` to CI workflow (currently only run in `update-pins.yml`) |
 | `.` | T08 | Pin remote lefthook configs to specific refs/SHAs instead of `main` for reproducibility |
 | `.` | T09 | Add `BATS_LIB_PATH` to the `ci` devShell's env so CI scripts don't need to set it separately |
