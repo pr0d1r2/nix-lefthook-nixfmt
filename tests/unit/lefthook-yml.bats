@@ -81,3 +81,15 @@ setup() {
     run grep "timeout.*taplo" "$CONFIG"
     assert_failure
 }
+
+@test "all remote refs are pinned to SHAs not branch names" {
+    run grep '  ref:' "$CONFIG"
+    refute_output --partial "ref: main"
+}
+
+@test "all remote refs are 40-character hex SHAs" {
+    while IFS= read -r line; do
+        ref=$(echo "$line" | sed 's/.*ref: //')
+        [[ "$ref" =~ ^[0-9a-f]{40}$ ]]
+    done < <(grep '  ref:' "$CONFIG")
+}
