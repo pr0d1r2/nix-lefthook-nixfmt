@@ -1,71 +1,5 @@
 ---
-output:
-  - failure
-
-remotes:
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-shellcheck
-    ref: 52d9501160f6f65e8e20a557a52dbb95b0a9434f
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-shfmt
-    ref: b923df9bc70d9ab6840c54715650ab6daeb619df
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-statix
-    ref: 006a1fdf7bcb4a12ff0aad938fa6bac71093e856
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-deadnix
-    ref: a8f9d5a0ae63e0e0c62dfba4c56f4f6bc336e45d
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-bats-parse
-    ref: 0562fd1bcd2d382d01da57bde2b629f39b2d503a
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-bats-unit
-    ref: 872ed7507d20fd2f03752e8e464b4607db523e07
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-yamllint
-    ref: fd99660e81a2d57afcc3335233ad2edb15905167
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-nix-flake-check
-    ref: 12f6cac6564be70fb84b557848aefc46a1ba0446
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-typos
-    ref: 53421b896a56702578d81d4d3dcffd74da20d30f
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-trailing-whitespace
-    ref: 5602aad490313efbc57dcea4cc13c15dfa430d3e
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-missing-final-newline
-    ref: e1b1c3d0ca0c9a4241a915d1c72fff1f3b848376
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-git-conflict-markers
-    ref: 1b849829d6de0a2f26fe32d89e76c3ebce02d1c9
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-editorconfig-checker
-    ref: dd6d0aca22ae21e553d2bfa5c7dba58ff025009e
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-git-no-local-paths
-    ref: 897aa3a6ab5f7977a319f14d778d5e00c146a0ef
-    configs:
-      - lefthook-remote.yml
-  - git_url: https://github.com/pr0d1r2/nix-lefthook-file-size-check
-    ref: f30fa4c19aaf68f1e9ad831d2b8e62863a3b6eb0
-    configs:
-      - lefthook-remote.yml
-
 pre-commit:
-  parallel: true
   commands:
     nixfmt:
       glob: "*.nix"
@@ -78,7 +12,6 @@ pre-commit:
       run: bash scripts/lefthook/taplo-check.sh {staged_files}
 
 pre-push:
-  parallel: true
   commands:
     nixfmt:
       glob: "*.nix"
