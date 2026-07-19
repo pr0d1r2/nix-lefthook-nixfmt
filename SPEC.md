@@ -116,4 +116,8 @@ failures (grep against a non-existent file). Fixed by removing the orphaned test
 9. **`lefthook.yml` referenced non-existent hook commands** — The refreshed `lefthook.yml` ran `lefthook-markdownlint` and `lefthook-markdownlint-agentic` (never packaged in the flake devShell), so CI's `lefthook run` exited 127 (`No such file or directory`). It also
 contradicted `tests/unit/lefthook-yml.bats` and SPEC tasks T10/T11/T04/T05. Fixed by rewriting `lefthook.yml` to the spec'd `bash scripts/lefthook/{nixfmt,markdownlint,taplo}-check.sh` commands, and cleared the newly-surfaced markdownlint violations in this file (MD041/MD040/MD013).
 
-10. **Duplicate `default` attribute in `packages` output** — The migration commit left a stale `mkShell` definition (referencing undefined `ciCommon` and `batsWithLibs`) as a second `default` inside `packages`, causing `nix flake check` to fail with "attribute 'default' already defined". Fixed by removing the orphaned `mkShell` block from `packages`.
+10. **Duplicate `default` attribute in `packages` output** — The migration commit left a stale `mkShell` definition (referencing undefined `ciCommon` and `batsWithLibs`) as a second `default` inside `packages`, causing `nix flake check` to fail with
+"attribute 'default' already defined". Fixed by removing the orphaned `mkShell` block from `packages`.
+
+11. **`confirm` app missing materialized packages on PATH** — The `confirm` app (run by the guardrails CI workflow) checks that all `lefthook-*` commands in `lefthook.yml` are on PATH via `command -v`. Its `runtimeInputs` only had basic utilities, not the
+materialized fragment wrappers (`lefthook-markdownlint`, `lefthook-markdownlint-agentic`, `lefthook-yamllint`). Fixed by appending `mat.packages` to `confirm`'s `runtimeInputs`.
