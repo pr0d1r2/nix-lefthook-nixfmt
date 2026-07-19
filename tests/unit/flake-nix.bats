@@ -7,22 +7,22 @@ setup() {
     CONFIG="$BATS_TEST_DIRNAME/../../flake.nix"
 }
 
-@test "ci devShell sets BATS_LIB_PATH env var" {
-    run grep "BATS_LIB_PATH" "$CONFIG"
-    assert_output --partial 'BATS_LIB_PATH = "'
+@test "devShells uses set-and-setting mkDevShells" {
+    run grep "mkDevShells" "$CONFIG"
+    assert_output --partial 'set-and-setting.lib.mkDevShells'
 }
 
-@test "ci devShell BATS_LIB_PATH references batsWithLibs" {
-    run grep "BATS_LIB_PATH" "$CONFIG"
-    assert_output --partial 'batsWithLibs'
+@test "confirm app uses runtimeEnv for env vars" {
+    run grep "runtimeEnv" "$CONFIG"
+    assert_success
 }
 
-@test "ci devShell BATS_LIB_PATH ends with /share/bats" {
-    run grep "BATS_LIB_PATH" "$CONFIG"
-    assert_output --partial '/share/bats'
+@test "confirm app reads script via builtins.readFile" {
+    run grep "readFile ./scripts/confirm-app.sh" "$CONFIG"
+    assert_success
 }
 
-@test "default devShell substitutes BATS_LIB_PATH via replaceStrings" {
-    run grep "replaceStrings" "$CONFIG"
-    assert_output --partial '@BATS_LIB_PATH@'
+@test "packages default uses writeShellApplication" {
+    run grep "writeShellApplication" "$CONFIG"
+    assert_output --partial 'writeShellApplication'
 }

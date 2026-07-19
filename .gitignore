@@ -5,3 +5,4 @@ result-*
 .markdownlint.yml
 .yamllint.yml
 lefthook.yml
+lefthook-local.yml
