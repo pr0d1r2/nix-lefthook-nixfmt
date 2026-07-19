@@ -35,11 +35,11 @@
     "nix-lefthook-editorconfig-checker-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784238567,
-        "narHash": "sha256-AL8slTe1xIhDYvBvy8A4VTpQLXYmiFvPqAp7NVAnqbM=",
+        "lastModified": 1784333951,
+        "narHash": "sha256-E9kQB7JJt0JfUSkvjKfh0EPboDaUZoC2Qud7xFDZEII=",
         "owner": "pr0d1r2",
         "repo": "nix-lefthook-editorconfig-checker",
-        "rev": "d49d12e650f59dd368cf677d6fc69222ec5301f2",
+        "rev": "5acfdb1e0569b8883e70c11b10aa5dd12266e6c3",
         "type": "github"
       },
       "original": {
@@ -147,11 +147,11 @@
     "nix-lefthook-statix-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784239992,
-        "narHash": "sha256-uba1BwwFjPRvxc2fk9yn8hxUEzwuzqOxcMEqmP/ICNg=",
+        "lastModified": 1784426621,
+        "narHash": "sha256-9dSX55IHuwOv4ivgLzXW7a86hSFCcPDdA7AiF7fj43c=",
         "owner": "pr0d1r2",
         "repo": "nix-lefthook-statix",
-        "rev": "00aa4d7de26251eec35357f6ca42fec8e1db6142",
+        "rev": "939a8a0bf50f0f0e37519d22e4d0cbc6f6a3a1ad",
         "type": "github"
       },
       "original": {
@@ -179,11 +179,11 @@
     "nix-lefthook-typos-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784238894,
-        "narHash": "sha256-XLsT8dsnJbEyGfzQ7s4TgyhgCQJz5l/DE8USEmt2xu4=",
+        "lastModified": 1784333642,
+        "narHash": "sha256-IqudwSsQW21fKSWApeMBcD0ecBOryobhhIipmxPOUZo=",
         "owner": "pr0d1r2",
         "repo": "nix-lefthook-typos",
-        "rev": "015d8c041ee0710e7e555541872b72c2a715979a",
+        "rev": "3c1d7ca9fb14a58ba05192d3d0ca8c68264675a4",
         "type": "github"
       },
       "original": {
@@ -195,11 +195,11 @@
     "nix-lefthook-yamllint-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784238155,
-        "narHash": "sha256-G2a+eEmekd8VHISfbU7TC1YRnvfdSW1F4nw4TbkH52o=",
+        "lastModified": 1784334568,
+        "narHash": "sha256-W32A7jzVOfs/WXb5yO7l7Axi8t+HCSQ1RsCh+Y/4Mho=",
         "owner": "pr0d1r2",
         "repo": "nix-lefthook-yamllint",
-        "rev": "19d670d1d7192fa64aa8f1d9d66547f1947739ec",
+        "rev": "1eab9848c8bdb01fa385613d33edf181a4f162dc",
         "type": "github"
       },
       "original": {
