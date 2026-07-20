@@ -93,25 +93,18 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 
 ## §B — Bugs / Known Issues
 
-1. **`.envrc` missing `watch_file` directives** — The `.envrc` contains only `use flake`. Per the project's own direnv skill, it should watch `flake.nix`, `flake.lock`, and dependent files so `direnv` reloads when they change. Without this, developers must manually `direnv reload` after flake changes.
-
-2. **Inconsistent `actions/checkout` versions** — `ci.yml` uses `actions/checkout@v6` while `update-pins.yml` uses `@v4`.
-
-3. **Local vs. remote nixfmt invocation mismatch** — `lefthook.yml` runs raw `nixfmt --check {staged_files}` bypassing the wrapper, while `lefthook-remote.yml` (for consumers) uses `lefthook-nixfmt`. The README documents this as intentional
-(avoiding circular flake deps), but it means the wrapper's file-filtering logic (skip non-`.nix`, skip missing) is not exercised by the project's own hooks.
-
-4. **`ci` devShell sets `BATS_LIB_PATH` as env, `default` sets it in shellHook** — The `ci` shell uses `BATS_LIB_PATH = "${batsWithLibs}/share/bats"` as an environment variable, while the `default` shell substitutes `@BATS_LIB_PATH@` in `dev.sh`. The value is correct
-in both but the `ci` shell path differs from what `dev.sh` produces (`…/share/bats` vs the template which appends `/share/bats` to the raw derivation path). These resolve to the same directory only because `batsWithLibs` output is the bats prefix. If the derivation layout changes, they could diverge.
-
-5. **Remote lefthook configs pinned to `main`** — All 15 remote lefthook repos in `lefthook.yml` use `ref: main`, meaning hook behavior can change without any local change. Pinning to SHAs or tags would improve reproducibility.
-
-6. **`SPEC.md` 3-space continuation indentation fails editorconfig-checker** — Numbered list continuation lines used 3-space indentation to align with list text, violating the `.editorconfig` `indent_size = 2` rule. Fixed by unwrapping continuations to single lines (MD013/line-length is already disabled).
-
-7. **`shellcheck` not directly available in CI devShell** — The `ci` devShell only exposed `shellcheck` as a `runtimeInput` inside the `lefthook-shellcheck` wrapper, not on the top-level PATH. The bats test `passes shellcheck` in `nixfmt-check.bats` calls `shellcheck`
-directly, so it failed in CI with "command not found". Fixed by adding `pkgs.shellcheck` to `ciCommon` in `flake.nix`.
-
-8. **Orphaned `update-pins-yml.bats` after dropping `update-pins.yml` workflow** — The commit that removed `.github/workflows/update-pins.yml` ("drop update-pins cron") left its test file `tests/unit/github/workflows/update-pins-yml.bats` in place, causing 5 test
-failures (grep against a non-existent file). Fixed by removing the orphaned test file.
-
-9. **`lefthook.yml` referenced non-existent hook commands** — The refreshed `lefthook.yml` ran `lefthook-markdownlint` and `lefthook-markdownlint-agentic` (never packaged in the flake devShell), so CI's `lefthook run` exited 127 (`No such file or directory`). It also
-contradicted `tests/unit/lefthook-yml.bats` and SPEC tasks T10/T11/T04/T05. Fixed by rewriting `lefthook.yml` to the spec'd `bash scripts/lefthook/{nixfmt,markdownlint,taplo}-check.sh` commands, and cleared the newly-surfaced markdownlint violations in this file (MD041/MD040/MD013).
+| ID | Date | Cause | Fix |
+|---|---|---|---|
+| B1 | 2026-07-19 | `.envrc` missing `watch_file` directives | Added watch entries for `flake.nix`, `flake.lock`, deps |
+| B2 | 2026-07-19 | Inconsistent `actions/checkout` versions (v4 vs v6) | Upgraded to v6 |
+| B3 | 2026-07-19 | Local hooks bypass wrapper (no file filtering) | Documented as intentional |
+| B4 | 2026-07-19 | `BATS_LIB_PATH` set differently in ci vs default shell | Noted; values resolve identically |
+| B5 | 2026-07-19 | Remote lefthook configs pinned to `main` | Pinned to SHAs |
+| B6 | 2026-07-19 | 3-space indent in SPEC.md failed editorconfig | Unwrapped to single lines |
+| B7 | 2026-07-19 | `shellcheck` missing from CI devShell PATH | Added `pkgs.shellcheck` to ciCommon |
+| B8 | 2026-07-19 | Orphaned `update-pins-yml.bats` after workflow removal | Removed test file |
+| B9 | 2026-07-19 | `lefthook.yml` referenced non-existent commands | Rewrote to `bash scripts/lefthook/*.sh` |
+| B10 | 2026-07-19 | Duplicate `default` attr in `packages` output | Removed orphaned mkShell block |
+| B11 | 2026-07-19 | `confirm` app missing materialized packages on PATH | Added `mat.packages` to runtimeInputs |
+| B12 | 2026-07-19 | `nix-no-embedded-shell-check` failed on confirm app `text` block | Extracted to `scripts/confirm-app.sh` + `runtimeEnv` |
+| B13 | 2026-07-19 | SPEC.md exceeded 8192-byte `.md` file-size limit | Condensed §B to table format |

@@ -4,13 +4,13 @@ setup() {
     load "${BATS_LIB_PATH}/bats-support/load.bash"
     load "${BATS_LIB_PATH}/bats-assert/load.bash"
 
-    TMPDIR="$(mktemp -d)"
-    export WATCH_LOG="$TMPDIR/watch_log"
-    export USE_LOG="$TMPDIR/use_log"
+    TEST_TMPDIR="$(mktemp -d)"
+    export WATCH_LOG="$TEST_TMPDIR/watch_log"
+    export USE_LOG="$TEST_TMPDIR/use_log"
 }
 
 teardown() {
-    rm -rf "$TMPDIR"
+    rm -rf "$TEST_TMPDIR"
 }
 
 @test "watches flake.nix" {

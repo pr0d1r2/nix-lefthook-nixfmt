@@ -1,0 +1,15 @@
+# Repo-local checks carried through from vendored lefthook.yml (#126).
+---
+
+pre-commit:
+  commands:
+    taplo:
+      glob: "*.toml"
+      run: bash scripts/lefthook/taplo-check.sh {staged_files}
+
+
+pre-push:
+  commands:
+    taplo:
+      glob: "*.toml"
+      run: bash scripts/lefthook/taplo-check.sh {push_files}
