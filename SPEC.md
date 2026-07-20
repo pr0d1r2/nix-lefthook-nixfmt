@@ -108,3 +108,4 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 | B11 | 2026-07-19 | `confirm` app missing materialized packages on PATH | Added `mat.packages` to runtimeInputs |
 | B12 | 2026-07-19 | `nix-no-embedded-shell-check` failed on confirm app `text` block | Extracted to `scripts/confirm-app.sh` + `runtimeEnv` |
 | B13 | 2026-07-19 | SPEC.md exceeded 8192-byte `.md` file-size limit | Condensed §B to table format |
+| B14 | 2026-07-20 | CI guardrails ref not updated after flake.lock pin refresh | Synced ci.yml to locked set-and-setting rev |
