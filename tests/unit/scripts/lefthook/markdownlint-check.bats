@@ -8,15 +8,15 @@ setup() {
     SCRIPT="$BATS_TEST_DIRNAME/../../../../scripts/lefthook/markdownlint-check.sh"
 
     mkdir -p "$TMP/bin"
-    cat > "$TMP/bin/timeout" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/timeout" <<'SH'
+#!@BASH@
 shift 1
 exec "$@"
 SH
     chmod +x "$TMP/bin/timeout"
 
-    cat > "$TMP/bin/markdownlint" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/markdownlint" <<'SH'
+#!@BASH@
 echo "markdownlint $*" >> "$TMP/markdownlint.log"
 SH
     chmod +x "$TMP/bin/markdownlint"
@@ -32,8 +32,8 @@ SH
 }
 
 @test "uses default timeout of 30 seconds" {
-    cat > "$TMP/bin/timeout" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/timeout" <<'SH'
+#!@BASH@
 echo "timeout=$1" >> "$TMP/timeout.log"
 shift 1
 exec "$@"
@@ -48,8 +48,8 @@ SH
 }
 
 @test "respects LEFTHOOK_MARKDOWNLINT_TIMEOUT override" {
-    cat > "$TMP/bin/timeout" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/timeout" <<'SH'
+#!@BASH@
 echo "timeout=$1" >> "$TMP/timeout.log"
 shift 1
 exec "$@"
@@ -63,8 +63,8 @@ SH
 }
 
 @test "propagates markdownlint exit code on failure" {
-    cat > "$TMP/bin/markdownlint" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/markdownlint" <<'SH'
+#!@BASH@
 exit 1
 SH
     chmod +x "$TMP/bin/markdownlint"

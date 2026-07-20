@@ -73,11 +73,30 @@
 
       checks = forAllSystems (
         pkgs:
+        let
+          mat = set-and-setting.lib.materializationFor { inherit pkgs fragments; };
+          batsLibPath = pkgs.symlinkJoin {
+            name = "bats-libraries";
+            paths = with pkgs.bats.libraries; [
+              bats-assert
+              bats-support
+            ];
+          };
+        in
         (set-and-setting.lib.checksFor {
           inherit pkgs fragments;
           src = ./.;
         })
         // {
+          unit = pkgs.runCommand "unit-tests" {
+            BATS_LIB_PATH = "${batsLibPath}/share/bats";
+            projectSrc = ./.;
+            nativeBuildInputs = [
+              pkgs.bats
+              pkgs.shellcheck
+            ]
+            ++ mat.packages;
+          } (builtins.readFile ./scripts/unit-tests.sh);
           dep-graph = set-and-setting.lib.mkDepGraphCheck {
             inherit pkgs;
             projectRoot = ./.;

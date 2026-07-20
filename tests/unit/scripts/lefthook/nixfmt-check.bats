@@ -8,15 +8,15 @@ setup() {
     SCRIPT="$BATS_TEST_DIRNAME/../../../../scripts/lefthook/nixfmt-check.sh"
 
     mkdir -p "$TMP/bin"
-    cat > "$TMP/bin/timeout" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/timeout" <<'SH'
+#!@BASH@
 shift 1
 exec "$@"
 SH
     chmod +x "$TMP/bin/timeout"
 
-    cat > "$TMP/bin/nixfmt" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/nixfmt" <<'SH'
+#!@BASH@
 echo "nixfmt $*" >> "$TMP/nixfmt.log"
 SH
     chmod +x "$TMP/bin/nixfmt"
@@ -32,8 +32,8 @@ SH
 }
 
 @test "uses default timeout of 30 seconds" {
-    cat > "$TMP/bin/timeout" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/timeout" <<'SH'
+#!@BASH@
 echo "timeout=$1" >> "$TMP/timeout.log"
 shift 1
 exec "$@"
@@ -48,8 +48,8 @@ SH
 }
 
 @test "respects LEFTHOOK_NIXFMT_TIMEOUT override" {
-    cat > "$TMP/bin/timeout" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/timeout" <<'SH'
+#!@BASH@
 echo "timeout=$1" >> "$TMP/timeout.log"
 shift 1
 exec "$@"
@@ -63,8 +63,8 @@ SH
 }
 
 @test "propagates nixfmt exit code on failure" {
-    cat > "$TMP/bin/nixfmt" <<'SH'
-#!/usr/bin/env bash
+    sed "s|@BASH@|$(command -v bash)|" > "$TMP/bin/nixfmt" <<'SH'
+#!@BASH@
 exit 1
 SH
     chmod +x "$TMP/bin/nixfmt"

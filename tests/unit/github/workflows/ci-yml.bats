@@ -7,9 +7,12 @@ setup() {
   CONFIG="$BATS_TEST_DIRNAME/../../../../.github/workflows/ci.yml"
 }
 
-@test "guardrails job uses set-and-setting reusable workflow" {
+@test "guardrails job uses the locked set-and-setting revision" {
+  locked_rev="$(sed -n '/"set-and-setting": {/,/"original": {/ s/.*"rev": "\([0-9a-f]\{40\}\)".*/\1/p' "$BATS_TEST_DIRNAME/../../../../flake.lock")"
+
+  [ -n "$locked_rev" ]
   run grep "uses:" "$CONFIG"
-  assert_output --partial "pr0d1r2/set-and-setting/.github/workflows/guardrails.yml"
+  assert_output "    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@$locked_rev"
 }
 
 @test "triggers on push to main" {
