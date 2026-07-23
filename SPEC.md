@@ -110,3 +110,4 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 | B13 | 2026-07-19 | SPEC.md exceeded 8192-byte `.md` file-size limit | Condensed §B to table format |
 | B14 | 2026-07-20 | CI guardrails ref not updated after flake.lock pin refresh | Synced ci.yml to locked set-and-setting rev |
 | B15 | 2026-07-22 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
+| B16 | 2026-07-23 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
