@@ -112,3 +112,4 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 | B15 | 2026-07-22 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
 | B16 | 2026-07-23 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
 | B17 | 2026-07-24 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
+| B18 | 2026-07-26 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
