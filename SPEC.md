@@ -114,3 +114,4 @@ runs `lefthook install` if `.git/hooks/pre-commit` is missing.
 | B17 | 2026-07-24 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
 | B18 | 2026-07-26 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
 | B19 | 2026-07-27 | CI guardrails ref drifted after set-and-setting lock refresh | Synced ci.yml to locked set-and-setting rev |
+| B20 | 2026-07-29 | `nix flake update` pulled set-and-setting rev that dropped `lib` output | Added `set-and-setting-lib` follows to inner rev that retains `lib`; synced CI ref |

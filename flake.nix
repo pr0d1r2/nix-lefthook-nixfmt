@@ -11,13 +11,14 @@
     nixpkgs.follows = "nixpkgs-lock/nixpkgs";
 
     set-and-setting.url = "github:pr0d1r2/set-and-setting";
+    set-and-setting-lib.follows = "set-and-setting/set-and-setting";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      set-and-setting,
+      set-and-setting-lib,
       ...
     }:
     let
@@ -46,16 +47,16 @@
           runtimeInputs = [ pkgs.nixfmt ];
           text = builtins.readFile ./lefthook-nixfmt.sh;
         };
-        setting = (set-and-setting.lib.mkSetting { inherit pkgs; }).materialized;
+        setting = (set-and-setting-lib.lib.mkSetting { inherit pkgs; }).materialized;
       });
 
       devShells = forAllSystems (
         pkgs:
         let
-          mat = set-and-setting.lib.materializationFor { inherit pkgs fragments; };
+          mat = set-and-setting-lib.lib.materializationFor { inherit pkgs fragments; };
           sys = pkgs.stdenv.hostPlatform.system;
         in
-        set-and-setting.lib.mkDevShells {
+        set-and-setting-lib.lib.mkDevShells {
           inherit pkgs;
           basePackages = mat.packages;
           settingHook = ''
@@ -63,8 +64,8 @@
             _assemble_out="$(mktemp -d)"
             FRAGMENTS="${builtins.concatStringsSep " " fragments}" \
               out="$_assemble_out" \
-              FRAGMENTS_DIR="${set-and-setting}/setting/integrations/lefthook" \
-              bash "${set-and-setting}/setting/lib/assemble-lefthook.sh"
+              FRAGMENTS_DIR="${set-and-setting-lib}/setting/integrations/lefthook" \
+              bash "${set-and-setting-lib}/setting/lib/assemble-lefthook.sh"
             cp -f "$_assemble_out/lefthook.yml" lefthook.yml
             rm -rf "$_assemble_out"
           '';
@@ -74,7 +75,7 @@
       checks = forAllSystems (
         pkgs:
         let
-          mat = set-and-setting.lib.materializationFor { inherit pkgs fragments; };
+          mat = set-and-setting-lib.lib.materializationFor { inherit pkgs fragments; };
           batsLibPath = pkgs.symlinkJoin {
             name = "bats-libraries";
             paths = with pkgs.bats.libraries; [
@@ -83,7 +84,7 @@
             ];
           };
         in
-        (set-and-setting.lib.checksFor {
+        (set-and-setting-lib.lib.checksFor {
           inherit pkgs fragments;
           src = ./.;
         })
@@ -97,7 +98,7 @@
             ]
             ++ mat.packages;
           } (builtins.readFile ./scripts/unit-tests.sh);
-          dep-graph = set-and-setting.lib.mkDepGraphCheck {
+          dep-graph = set-and-setting-lib.lib.mkDepGraphCheck {
             inherit pkgs;
             projectRoot = ./.;
           };
@@ -108,7 +109,7 @@
       apps = forAllSystems (
         pkgs:
         let
-          mat = set-and-setting.lib.materializationFor { inherit pkgs fragments; };
+          mat = set-and-setting-lib.lib.materializationFor { inherit pkgs fragments; };
         in
         {
           confirm = {
@@ -126,12 +127,12 @@
                 ]
                 ++ mat.packages;
                 runtimeEnv = {
-                  FRAGMENTS_DIR = "${set-and-setting}/setting/integrations/lefthook";
-                  ASSEMBLE_SCRIPT = "${set-and-setting}/setting/lib/assemble-lefthook.sh";
-                  DETECT_SCRIPT = "${set-and-setting}/setting/lib/detect-fragments.sh";
+                  FRAGMENTS_DIR = "${set-and-setting-lib}/setting/integrations/lefthook";
+                  ASSEMBLE_SCRIPT = "${set-and-setting-lib}/setting/lib/assemble-lefthook.sh";
+                  DETECT_SCRIPT = "${set-and-setting-lib}/setting/lib/detect-fragments.sh";
                   SETTING_SRC = "${self.packages.${pkgs.stdenv.hostPlatform.system}.setting}";
-                  CONFIRM_SCRIPT = "${set-and-setting}/lib/confirm.sh";
-                  CONFIRM_REV = "${set-and-setting.rev or "unknown"}";
+                  CONFIRM_SCRIPT = "${set-and-setting-lib}/lib/confirm.sh";
+                  CONFIRM_REV = "${set-and-setting-lib.rev or "unknown"}";
                 };
                 text = builtins.readFile ./scripts/confirm-app.sh;
               }
