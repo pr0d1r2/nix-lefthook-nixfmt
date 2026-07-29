@@ -9,7 +9,7 @@ setup() {
 
 @test "devShells uses set-and-setting mkDevShells" {
     run grep "mkDevShells" "$CONFIG"
-    assert_output --partial 'set-and-setting.lib.mkDevShells'
+    assert_output --partial 'set-and-setting-lib.lib.mkDevShells'
 }
 
 @test "confirm app uses runtimeEnv for env vars" {
