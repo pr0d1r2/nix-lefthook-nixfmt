@@ -26,3 +26,10 @@ setup() {
     run grep "writeShellApplication" "$CONFIG"
     assert_output --partial 'writeShellApplication'
 }
+
+@test "set-and-setting-lib follows the top-level set-and-setting input" {
+    run grep -E '^    set-and-setting-lib\.follows = "set-and-setting";$' "$CONFIG"
+    assert_success
+    run grep -E '^    set-and-setting-lib\.follows = "set-and-setting/set-and-setting";$' "$CONFIG"
+    assert_failure
+}

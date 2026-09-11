@@ -11,7 +11,7 @@
     nixpkgs.follows = "nixpkgs-lock/nixpkgs";
 
     set-and-setting.url = "github:pr0d1r2/set-and-setting";
-    set-and-setting-lib.follows = "set-and-setting/set-and-setting";
+    set-and-setting-lib.follows = "set-and-setting";
   };
 
   outputs =
