@@ -5167,9 +5167,8 @@
           "nixpkgs"
         ],
         "nixpkgs-lock": "nixpkgs-lock",
-        "set-and-setting": "set-and-setting_3",
+        "set-and-setting": "set-and-setting_5",
         "set-and-setting-lib": [
-          "set-and-setting",
           "set-and-setting"
         ]
       }
