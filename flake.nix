@@ -24,44 +24,65 @@
       set-and-setting,
       ...
     }:
-    set-and-setting.lib.mkConsumerFlake {
-      inherit self nixpkgs set-and-setting;
-      fragments = [
-        "base"
-        "nix"
-        "shell"
-        "ascii"
-        "markdown"
-        "yaml"
-      ];
-      src = ./.;
-      extraPackages = pkgs: {
-        default = pkgs.writeShellApplication {
-          name = "lefthook-nixfmt";
-          runtimeInputs = [ pkgs.nixfmt ];
-          text = builtins.readFile ./lefthook-nixfmt.sh;
-        };
-      };
-      extraChecks = pkgs: {
-        unit = pkgs.runCommand "unit-tests" {
-          BATS_LIB_PATH = "${
-            pkgs.symlinkJoin {
-              name = "bats-libraries";
-              paths = with pkgs.bats.libraries; [
-                bats-assert
-                bats-support
+    (
+      consumer:
+      consumer
+      // {
+        # The standard devShells carry only the lefthook-* wrappers; the
+        # unit suite also runs raw shellcheck against every script.
+        devShells = builtins.mapAttrs (
+          system: shells:
+          builtins.mapAttrs (
+            _name: shell:
+            shell.overrideAttrs (old: {
+              buildInputs = (old.buildInputs or [ ]) ++ [
+                nixpkgs.legacyPackages.${system}.shellcheck
               ];
-            }
-          }/share/bats";
-          projectSrc = ./.;
-          nativeBuildInputs = [
-            pkgs.bats
-            pkgs.git
-            pkgs.nixfmt
-            pkgs.shellcheck
-            self.packages.${pkgs.stdenv.hostPlatform.system}.default
+            })
+          ) shells
+        ) consumer.devShells;
+      }
+    )
+      (
+        set-and-setting.lib.mkConsumerFlake {
+          inherit self nixpkgs set-and-setting;
+          fragments = [
+            "base"
+            "nix"
+            "shell"
+            "ascii"
+            "markdown"
+            "yaml"
           ];
-        } (builtins.readFile ./scripts/unit-tests.sh);
-      };
-    };
+          src = ./.;
+          extraPackages = pkgs: {
+            default = pkgs.writeShellApplication {
+              name = "lefthook-nixfmt";
+              runtimeInputs = [ pkgs.nixfmt ];
+              text = builtins.readFile ./lefthook-nixfmt.sh;
+            };
+          };
+          extraChecks = pkgs: {
+            unit = pkgs.runCommand "unit-tests" {
+              BATS_LIB_PATH = "${
+                pkgs.symlinkJoin {
+                  name = "bats-libraries";
+                  paths = with pkgs.bats.libraries; [
+                    bats-assert
+                    bats-support
+                  ];
+                }
+              }/share/bats";
+              projectSrc = ./.;
+              nativeBuildInputs = [
+                pkgs.bats
+                pkgs.git
+                pkgs.nixfmt
+                pkgs.shellcheck
+                self.packages.${pkgs.stdenv.hostPlatform.system}.default
+              ];
+            } (builtins.readFile ./scripts/unit-tests.sh);
+          };
+        }
+      );
 }

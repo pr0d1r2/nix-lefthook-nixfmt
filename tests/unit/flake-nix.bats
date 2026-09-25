@@ -38,3 +38,8 @@ setup() {
     run grep "set-and-setting-lib" "$CONFIG"
     assert_failure
 }
+
+@test "devShells add raw shellcheck for the unit suite" {
+    run grep "legacyPackages.\${system}.shellcheck" "$CONFIG"
+    assert_success
+}
