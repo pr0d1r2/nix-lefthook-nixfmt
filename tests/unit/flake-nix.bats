@@ -7,19 +7,14 @@ setup() {
     CONFIG="$BATS_TEST_DIRNAME/../../flake.nix"
 }
 
-@test "devShells uses set-and-setting mkDevShells" {
-    run grep "mkDevShells" "$CONFIG"
-    assert_output --partial 'set-and-setting-lib.lib.mkDevShells'
+@test "outputs delegate to set-and-setting mkConsumerFlake" {
+    run grep "mkConsumerFlake" "$CONFIG"
+    assert_output --partial 'set-and-setting.lib.mkConsumerFlake {'
 }
 
-@test "confirm app uses runtimeEnv for env vars" {
-    run grep "runtimeEnv" "$CONFIG"
-    assert_success
-}
-
-@test "confirm app reads script via builtins.readFile" {
-    run grep "readFile ./scripts/confirm-app.sh" "$CONFIG"
-    assert_success
+@test "outputs body has no top-level let block" {
+    run grep -E '^    let$' "$CONFIG"
+    assert_failure
 }
 
 @test "packages default uses writeShellApplication" {
@@ -27,9 +22,24 @@ setup() {
     assert_output --partial 'writeShellApplication'
 }
 
-@test "set-and-setting-lib follows the top-level set-and-setting input" {
-    run grep -E '^    set-and-setting-lib\.follows = "set-and-setting";$' "$CONFIG"
+@test "unit check reads script via builtins.readFile" {
+    run grep "readFile ./scripts/unit-tests.sh" "$CONFIG"
     assert_success
-    run grep -E '^    set-and-setting-lib\.follows = "set-and-setting/set-and-setting";$' "$CONFIG"
+}
+
+@test "set-and-setting follows the top-level nixpkgs pins" {
+    run grep -E '^      inputs\.nixpkgs\.follows = "nixpkgs";$' "$CONFIG"
+    assert_success
+    run grep -E '^      inputs\.nixpkgs-lock\.follows = "nixpkgs-lock";$' "$CONFIG"
+    assert_success
+}
+
+@test "no separate set-and-setting-lib input" {
+    run grep "set-and-setting-lib" "$CONFIG"
     assert_failure
+}
+
+@test "devShells add raw shellcheck for the unit suite" {
+    run grep "legacyPackages.\${system}.shellcheck" "$CONFIG"
+    assert_success
 }
