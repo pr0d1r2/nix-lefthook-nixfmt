@@ -9,8 +9,7 @@ setup() {
 
 @test "guardrails job uses the locked set-and-setting revision" {
   lock="$BATS_TEST_DIRNAME/../../../../flake.lock"
-  sas_node="$(sed -n '/^    "root": {$/,/^    }/ s/.*"set-and-setting": "\([a-z0-9_-]*\)".*/\1/p' "$lock")"
-  locked_rev="$(sed -n "/\"${sas_node}\": {/,/\"original\":/ s/.*\"rev\": \"\([0-9a-f]\{40\}\)\".*/\1/p" "$lock")"
+  locked_rev="$(sed -n '/^    "set-and-setting": {/,/^    }/ s/.*"rev": "\([0-9a-f]\{40\}\)".*/\1/p' "$lock")"
 
   [ -n "$locked_rev" ]
   run grep '^    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@' "$CONFIG"
