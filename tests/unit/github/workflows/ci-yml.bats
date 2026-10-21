@@ -17,6 +17,11 @@ setup() {
   assert_output "    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@$locked_rev"
 }
 
+@test "guardrails job does not use a symbolic revision" {
+  run grep "uses:" "$CONFIG"
+  assert_output --regexp '    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@[0-9a-f]{40}'
+}
+
 @test "triggers on push to main" {
   run grep -A2 "push:" "$CONFIG"
   assert_output --partial "main"
