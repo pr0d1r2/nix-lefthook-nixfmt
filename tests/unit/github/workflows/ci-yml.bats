@@ -13,12 +13,12 @@ setup() {
   locked_rev="$(sed -n "/\"${sas_node}\": {/,/\"original\":/ s/.*\"rev\": \"\([0-9a-f]\{40\}\)\".*/\1/p" "$lock")"
 
   [ -n "$locked_rev" ]
-  run grep "uses:" "$CONFIG"
+  run grep '^    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@' "$CONFIG"
   assert_output "    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@$locked_rev"
 }
 
 @test "guardrails job does not use a symbolic revision" {
-  run grep "uses:" "$CONFIG"
+  run grep '^    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@' "$CONFIG"
   assert_output --regexp '    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@[0-9a-f]{40}'
 }
 
