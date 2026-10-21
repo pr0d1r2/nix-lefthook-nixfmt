@@ -22,6 +22,11 @@ setup() {
   assert_output --regexp '    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@[0-9a-f]{40}'
 }
 
+@test "guardrails job does not use the moving standard revision" {
+  run grep -F 'pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@standard-current' "$CONFIG"
+  assert_failure
+}
+
 @test "triggers on push to main" {
   run grep -A2 "push:" "$CONFIG"
   assert_output --partial "main"
