@@ -43,3 +43,8 @@ setup() {
     run grep "legacyPackages.\${system}.shellcheck" "$CONFIG"
     assert_success
 }
+
+@test "flake exposes nixfmt as its formatter" {
+    run grep -A2 "formatter = builtins.mapAttrs" "$CONFIG"
+    assert_output --partial 'nixpkgs.legacyPackages.${system}.nixfmt'
+}
