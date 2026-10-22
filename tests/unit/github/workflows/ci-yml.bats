@@ -12,6 +12,9 @@ setup() {
   locked_rev="$(sed -n '/^    "set-and-setting": {/,/^    }/ s/.*"rev": "\([0-9a-f]\{40\}\)".*/\1/p' "$lock")"
 
   [ -n "$locked_rev" ]
+  run grep -c '^    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@' "$CONFIG"
+  assert_output "1"
+
   run grep '^    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@' "$CONFIG"
   assert_output "    uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@$locked_rev"
 }
