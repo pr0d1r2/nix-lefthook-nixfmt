@@ -41,6 +41,10 @@
             })
           ) shells
         ) consumer.devShells;
+
+        formatter = builtins.mapAttrs (
+          system: _packages: nixpkgs.legacyPackages.${system}.nixfmt
+        ) consumer.packages;
       }
     )
       (
