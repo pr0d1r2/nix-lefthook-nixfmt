@@ -9,5 +9,6 @@ name: CI
 
 jobs:
   guardrails:
-    # Keep this revision aligned with the set-and-setting node in flake.lock.
+    # Pin this revision to the set-and-setting node in flake.lock; the guardrails
+    # workflow must not follow the moving standard branch.
     uses: pr0d1r2/set-and-setting/.github/workflows/guardrails.yml@c54b884879d64492523421472069bf7709c912d3
