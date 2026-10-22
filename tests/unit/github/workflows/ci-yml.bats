@@ -9,7 +9,7 @@ setup() {
 
 @test "guardrails job uses the locked set-and-setting revision" {
   lock="$BATS_TEST_DIRNAME/../../../../flake.lock"
-  locked_rev="$(sed -n '/^    "set-and-setting": {/,/^    }/ s/.*"rev": "\([0-9a-f]\{40\}\)".*/\1/p' "$lock")"
+  locked_rev="$(awk '/^    "set-and-setting": \{/ { in_node=1 } in_node && /"rev": "[0-9a-f]{40}"/ { gsub(/.*"rev": "|".*/, ""); print; in_node=0 }' "$lock")"
 
   [ -n "$locked_rev" ]
   [[ "$locked_rev" =~ ^[0-9a-f]{40}$ ]]
