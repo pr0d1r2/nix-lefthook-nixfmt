@@ -8,6 +8,16 @@ setup() {
 }
 
 @test "nixpkgs lock uses the brotli-fixed nixos-26.05 revision" {
-    run grep -A8 '"nixpkgs": {' "$LOCK"
-    assert_output --partial '"rev": "c56a87d8e41ce69bd2af57eb35dcc117a9dfca33"'
+    run awk '
+        /"nixpkgs(_[0-9]+)?": \{/ { in_node = 1; nodes++ }
+        in_node && /"rev":/ {
+            if ($0 !~ /"rev": "c56a87d8e41ce69bd2af57eb35dcc117a9dfca33"/) {
+                bad = 1
+            }
+            in_node = 0
+            revisions++
+        }
+        END { exit !(nodes > 0 && nodes == revisions && !bad) }
+    ' "$LOCK"
+    assert_success
 }
